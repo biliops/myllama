@@ -1,6 +1,6 @@
 # llama.cpp ARM 推理服务部署指南
 
-本文档将指导你使用 Dockerfile 部署 Qwen3-0.6B 大语言模型推理服务。
+本文档将指导你使用 Demo.Dockerfile 部署 Qwen3-0.6B 大语言模型推理服务。
 
 ## 前置条件
 
@@ -143,26 +143,3 @@ CMD ["llama-server", "--host", "0.0.0.0", "--port", "12233", ...]
 | `-c 40960` | 上下文窗口大小 |
 | `--flash-attn on` | 启用 Flash Attention |
 | `--ui` | 启用 Web UI |
-
-## 故障排除
-
-### 端口被占用
-
-如果 12233 端口被占用，可以修改端口映射：
-
-```bash
-docker run -d \
-  --name llama-server \
-  -p 8080:12233 \
-  llama-qwen3-0.6b
-```
-
-然后访问 `http://IP:8080`
-
-### 内存不足
-
-如果启动失败提示内存不足，请确保服务器至少有 16GB 可用内存。
-
-### 网络问题
-
-如果下载模型失败，请检查网络连接，确保可以访问 modelscope 和阿里云镜像。
