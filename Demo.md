@@ -15,7 +15,8 @@
 在你的服务器上创建一个目录，然后下载 Demo.Dockerfile：
 
 ```bash
-mkdir -p ~/llama-server && cd ~/llama-server
+git clone https://github.com/higkoo/MyLLaMA.git
+cd MyLLaMA
 # 将 Demo.Dockerfile 内容复制到当前目录
 ```
 
