@@ -1,6 +1,6 @@
 FROM swr.cn-east-3.myhuaweicloud.com/higkoo/llama-kunpeng920:b9496
 
-RUN rm -f /etc/apt/sources.list.d/debian.sources && \
+RUN rm -fv /etc/apt/sources.list.d/debian.sources && \
     apt update && \
     apt -y install python3-pip && \
     pip3 install --break-system-packages modelscope -i https://mirrors.aliyun.com/pypi/simple && \
@@ -8,11 +8,12 @@ RUN rm -f /etc/apt/sources.list.d/debian.sources && \
 
 EXPOSE 12233
 
-CMD ["llama-server", "--ui", "--host", "0.0.0.0", "--port", "12233", \
-     "-t", "20", "-tb", "40", "-np", "1", "-a", "Qwen3:0.6B", "-lv", "4", \
+CMD ["llama-server", "--host", "0.0.0.0", "--port", "12233", \
+     "-t", "20", "-tb", "40", "-np", "1", "-a", "Qwen3:0.6B", "-lv", "3", \
      "-m", "/tmp/Qwen3-0.6B-UD-IQ1_S.gguf", "--jinja", "--chat-template", "chatml", \
-     "--flash-attn", "on", "-ctk", "q4_0", "-ctv", "q4_0", "-c", "131072", "-b", "512", "-ub", "256", "--cache-ram", "8", \
+     "--flash-attn", "on", "-ctk", "q4_0", "-ctv", "q4_0", "-c", "40960", "-b", "512", "-ub", "256", "--cache-ram", "8", \
      "-fit", "on", "--cont-batching", "--repack", "--no-mmap", "--kv-unified", "--cache-idle-slots", \
-     "--ui", "--mlock", "--mmap", "--warmup", "--props", "--metrics", \
+     "--mlock", "--mmap", "--warmup", "--props", "--metrics", \
      "--temp", "0.6", "--top_p", "0.95", "--top_k", "20", "--min_p", "0.0", \
-     "--presence-penalty", "0.0", "--repeat-penalty", "1.0"]
+     "--presence-penalty", "0.0", "--repeat-penalty", "1.0", \
+     "--ui", "--path", "/opt/llama-b9496-ui"]
