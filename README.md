@@ -22,31 +22,65 @@
 - 鲲鹏 920 处理器及兼容 ARMv8.2+ 架构
 - Linux 操作系统（推荐 CentOS 7.6+ 或 Ubuntu 18.04+）
 - 至少 16GB 内存（建议 32GB+）
+- Podman 容器运行时
 
-### 安装与运行
+### 安装 Podman
 
 ```bash
-# 克隆项目
-git clone git@github.com:biliops/MyLLaMA.git
-cd MyLLaMA
+# CentOS/RHEL 安装
+sudo yum install podman -y
 
-# 安装依赖
-bash install.sh
+# Ubuntu/Debian 安装
+sudo apt-get update && sudo apt-get install podman -y
 
-# 启动服务
-bash start.sh
+# 验证安装
+podman --version
 ```
 
-### 使用示例
+### 运行推理服务
 
 ```bash
-# 运行推理服务
-./llama-server --model ./models/llama-7b.gguf --port 8080
+# 拉取预构建镜像
+podman pull higkoohk/llama-kunpeng920:b9496
 
-# API 调用示例
+# 创建模型目录
+mkdir -p ./models
+
+# 下载 GGUF 格式模型到 ./models 目录
+# 例如：llama-7b-q4_0.gguf
+
+# 运行推理容器
+podman run -d \
+  --name llama-server \
+  -p 8080:8080 \
+  -v $(pwd)/models:/models \
+  --cpus=32 \
+  higkoohk/llama-kunpeng920:b9496 \
+  --model /models/llama-7b-q4_0.gguf \
+  --port 8080 \
+  --nthreads 32
+```
+
+### API 调用示例
+
+```bash
+# 文本补全
 curl -X POST http://localhost:8080/completions \
   -H "Content-Type: application/json" \
-  -d '{"prompt": "Hello, world!", "max_tokens": 100}'
+  -d '{
+    "prompt": "Hello, world!",
+    "max_tokens": 100,
+    "temperature": 0.7
+  }'
+
+# 流式输出
+curl -X POST http://localhost:8080/completions \
+  -H "Content-Type: application/json" \
+  -d '{
+    "prompt": "请介绍一下人工智能",
+    "max_tokens": 200,
+    "stream": true
+  }'
 ```
 
 ## 性能对比
