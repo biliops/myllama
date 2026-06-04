@@ -12,11 +12,11 @@
 
 ### 1. 下载 Dockerfile
 
-下载 Demo.Dockerfile：
+下载 Demo.Dockerfile 和 Qwen3-0.6.jinja：
 
 ```bash
-git clone https://github.com/higkoo/MyLLaMA.git
-cd MyLLaMA
+# 下载/克隆/手动复制粘贴 /tmp/Demo.Dockerfile 、  /tmp/Qwen3-0.6.jinja 文件
+wget -N -P /tmp https://raw.githubusercontent.com/biliops/MyLLaMA/main/{Demo.Dockerfile,Qwen3-0.6.jinja}
 ```
 
 ### 2. 构建 Docker 镜像
@@ -24,7 +24,9 @@ cd MyLLaMA
 执行以下命令构建镜像：
 
 ```bash
-docker build -t llama-qwen3-0.6b -f Demo.Dockerfile .
+podman build -t llama-qwen3-0.6b -f Demo.Dockerfile /tmp
+# 或
+docker build -t llama-qwen3-0.6b -f Demo.Dockerfile /tmp
 ```
 
 > **说明**：构建过程会自动完成以下工作：
@@ -38,10 +40,9 @@ docker build -t llama-qwen3-0.6b -f Demo.Dockerfile .
 镜像构建完成后，运行以下命令启动服务：
 
 ```bash
-docker run -d \
-  --name llama-server \
-  -p 12233:12233 \
-  llama-qwen3-0.6b
+podman run --rm --name llama-server -p 12233:12233 localhost/llama-qwen3-0.6b
+# 或 
+docker run -d --name llama-server -p 12233:12233 llama-qwen3-0.6b
 ```
 
 > **参数说明**：
