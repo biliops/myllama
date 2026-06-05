@@ -18,4 +18,4 @@ CMD ["llama-server", "--host", "0.0.0.0", "--port", "12233", \
      "--mlock", "--mmap", "--warmup", "--props", "--metrics", \
      "--temp", "0.6", "--top_p", "0.95", "--top_k", "20", "--min_p", "0.0", \
      "--presence-penalty", "1.1", "--repeat-penalty", "1.0", \
-     "--ui", "--path", "/opt/llama-b9496-ui"]
+     "--ui", "--path", "/opt/llama-b9496-ui", "--numa", "isolate"]

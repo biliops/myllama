@@ -16,7 +16,7 @@
 
 ```bash
 # 下载/克隆/手动复制粘贴 /tmp/Demo.Dockerfile 、  /tmp/Qwen3-0.6.jinja 文件
-wget -N -P /tmp https://raw.githubusercontent.com/biliops/MyLLaMA/main/{Demo.Dockerfile,Qwen3-0.6.jinja}
+wget -N -P /tmp https://raw.githubusercontent.com/biliops/MyLLaMA/Kunpeng920/{Demo.Dockerfile,Qwen3-0.6.jinja}
 ```
 
 ### 2. 构建 Docker 镜像
