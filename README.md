@@ -59,7 +59,7 @@ nice -n 19 numactl --cpunodebind=1 --membind=1 \
  --chat-template-file /model/chat_template.jinja \
  --path /opt/llama-b9496-ui \
  --flash-attn on -ctk q4_0 -ctv q4_0 -c 131072 -b 512 -ub 256 --cache-ram 8 \
- -fit on --cont-batching --repack --no-mmap --kv-unified --cache-idle-slots \
+ -fit on --cont-batching --repack --kv-unified --cache-idle-slots \
  --ui --mlock --mmap --warmup --props --metrics \
  --temp 0.6 --top_p 0.95 --top_k 20 --min_p 0.0 --presence-penalty 0.0 --repeat-penalty 1.0 \
  --reasoning off --image-min-tokens 1024
