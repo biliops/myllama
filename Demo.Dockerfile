@@ -14,7 +14,7 @@ CMD ["llama-server", "--host", "0.0.0.0", "--port", "12233", \
      "-t", "20", "-tb", "40", "-np", "1", "-a", "Qwen3:0.6B", "-lv", "3", \
      "-m", "/tmp/Qwen3-0.6B-Q8_0.gguf", "--jinja", "--chat-template-file", "/tmp/Qwen3-0.6.jinja", \
      "--flash-attn", "on", "-ctk", "q8_0", "-ctv", "q8_0", "-c", "32768", "-b", "512", "-ub", "256", "--cache-ram", "8", \
-     "-fit", "on", "--cont-batching", "--repack", "--no-mmap", "--kv-unified", "--cache-idle-slots", \
+     "-fit", "on", "--cont-batching", "--repack", "--kv-unified", "--cache-idle-slots", \
      "--mlock", "--mmap", "--warmup", "--props", "--metrics", \
      "--temp", "0.6", "--top_p", "0.95", "--top_k", "20", "--min_p", "0.0", \
      "--presence-penalty", "1.1", "--repeat-penalty", "1.0", \
