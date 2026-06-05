@@ -1,4 +1,4 @@
-# MyLLaMA: llama.cpp ARM 极致性能优化
+# 针对 鲲鹏920 处理器的 llama.cpp 极致性能优化
 
 基于 llama.cpp 的 ARM 处理器深度优化项目，专注于在鲲鹏 920 处理器上实现极致的 CPU 推理性能。
 
@@ -35,13 +35,19 @@ apt -y install podman
 # 验证安装
 podman --version # 更擅长
 ```
-
-### 运行推理服务
-
+### 快速演示 
+```bash
+# 直接下载，不用 git clone
+wget -N -P /tmp https://raw.githubusercontent.com/biliops/MyLLaMA/Kunpeng920/{Demo.Dockerfile,Qwen3-0.6.jinja}
+# 生成镜像，同时可用 docker 
+podman build -t llama-qwen3-0.6b -f Demo.Dockerfile /tmp
+# 启动 llama-server 推理 Qwen3-0.6 模型，访问： http://ip:12233 即可
+podman run --rm --name llama-server -p 12233:12233 localhost/llama-qwen3-0.6b
+```
+### 运行推理服务  
 ```bash
 # 拉取预构建镜像
 podman pull higkoohk/llama-kunpeng920:b9496
-
 # 请自行下载并手动修改命令行中的模型路径 (只用改 /model 目录下的文件，/opt/llama-b9496-ui 是镜像内路径不用改)
 nice -n 19 numactl --cpunodebind=1 --membind=1 \
  podman run --rm --network=host -v /model:/model \
@@ -58,9 +64,7 @@ nice -n 19 numactl --cpunodebind=1 --membind=1 \
  --temp 0.6 --top_p 0.95 --top_k 20 --min_p 0.0 --presence-penalty 0.0 --repeat-penalty 1.0 \
  --reasoning off --image-min-tokens 1024
 ```
-
-### API 调用示例
-
+### API 调用示例  
 ```bash
 curl -X POST http://localhost:12233/v1/chat/completions \
   -H "Content-Type: application/json" \
@@ -70,10 +74,8 @@ curl -X POST http://localhost:12233/v1/chat/completions \
     "temperature": 0.7
   }'
 ```
-
-## 性能对比
-
-经过优化后（kml+bisheng），在鲲鹏 920 处理器上的推理性能相比原始 llama.cpp 实现有显著提升：
+## 性能对比  
+经过优化后（kml+bisheng），在鲲鹏 920 处理器上的推理性能相比原始 llama.cpp 实现有显著提升： 
 
 | 模型 | 原始 llama.cpp | 优化后 | 提升幅度 |
 |------|--------------|--------|----------|
