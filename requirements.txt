@@ -1,0 +1,16 @@
+# ==========================================
+# 安装方式：
+# pip install -r requirements.txt
+# ==========================================
+
+# 网络请求库
+requests>=2.31.0
+
+# OpenAI API 客户端（兼容 llm.ai/ollama 等服务）
+openai>=1.0.0
+
+# 读取 .env 配置文件
+python-dotenv>=1.0.0
+
+# Tavily 搜索引擎
+tavily-python>=0.3.0
