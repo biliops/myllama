@@ -13,12 +13,12 @@
 
 ---
 
-## 🔧 运行方式（复制粘贴即可）
+## 🔧 运行方式（按需执行）
 
 ```bash
-. ~/conda.env 
-conda activate ClaudeTap
-python ./AgentDemo.py
+. ~/conda.env # 激活 conda 环境
+conda activate ClaudeTap # 进入虚拟环境
+python ./AgentDemo.py # 执行程序
 ```
 
 ---
