@@ -1,0 +1,283 @@
+[{
+  "timestamp": "2026-06-10T05:02:26.751010+00:00",
+  "request_id": "req_e64280a1f534",
+  "turn": 7,
+  "duration_ms": 2146,
+  "request": {
+    "method": "POST",
+    "path": "/v1/chat/completions",
+    "headers": {
+      "Host": "llm.ai",
+      "Accept-Encoding": "gzip, deflate",
+      "Accept": "application/json",
+      "Content-Type": "application/json",
+      "User-Agent": "OpenAI/Python 2.30.0",
+      "X-Stainless-Lang": "python",
+      "X-Stainless-Package-Version": "2.30.0",
+      "X-Stainless-OS": "MacOS",
+      "X-Stainless-Arch": "arm64",
+      "X-Stainless-Runtime": "CPython",
+      "X-Stainless-Runtime-Version": "3.13.13",
+      "Authorization": "Bearer sk-zL...",
+      "X-Stainless-Async": "false",
+      "x-stainless-retry-count": "0",
+      "x-stainless-read-timeout": "600",
+      "Content-Length": "1111"
+    },
+    "body": {
+      "messages": [{
+          "role": "system",
+          "content": "\n你是一个智能旅行助手。你的任务是分析用户的请求，并使用可用工具一步步地解决问题。\n\n# 可用工具:\n- `get_weather(city: str)`: 查询指定城市的实时天气。\n- `get_attraction(city: str, weather: str)`: 根据城市和天气搜索推荐的旅游景点。\n\n# 输出格式要求:\n你的每次回复必须严格遵循以下格式，包含一对Thought和Action：\n\nThought: [你的思考过程和下一步计划]\nAction: [你要执行的具体行动]\n\nAction的格式必须是以下之一：\n1. 调用工具：function_name(arg_name=\"arg_value\")\n2. 结束任务：Finish[最终答案]\n\n# 重要提示:\n- 每次只输出一对Thought-Action\n- Action必须在同一行，不要换行\n- 当收集到足够信息可以回答用户问题时，必须使用 Action: Finish[最终答案] 格式结束\n\n请开始吧！\n"
+        },{
+          "role": "user",
+          "content": "用户请求: 你好，请帮我查询一下今天北京的天气，然后根据天气推荐一个合适的旅游景点。"
+        }],
+      "model": "Qwen3.6:MTP",
+      "stream": false
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Access-Control-Allow-Origin": "",
+      "Content-Length": "882",
+      "Content-Type": "application/json; charset=utf-8",
+      "Date": "Wed, 10 Jun 2026 05:02:26 GMT",
+      "Server": "nginx",
+      "X-New-Api-Version": "v1.0.0-rc.2",
+      "X-Oneapi-Request-Id": "202606100502246215291198268d9d6q3NSJJU0"
+    },
+    "body": {
+      "choices": [{
+          "finish_reason": "stop",
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "Thought: 用户想要查询北京的天气，并根据天气情况获取旅游景点推荐。首先，我需要调用 get_weather 函数来获取北京当前的天气信息。\n\nAction: Action: get_weather(city=\"北京\")"
+          }
+        }
+      ],
+      "created": 1781067746,
+      "model": "Qwen3.6:35B",
+      "system_fingerprint": "b1-63248fc",
+      "object": "chat.completion",
+      "usage": {
+        "completion_tokens": 42,
+        "prompt_tokens": 439,
+        "total_tokens": 481,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "id": "chatcmpl-vlo8UoYwxLF5yLRVpVijVxMAFfe8IkWV",
+      "timings": {
+        "cache_n": 0,
+        "prompt_n": 439,
+        "prompt_ms": 1155.942,
+        "prompt_per_token_ms": 2.633125284738041,
+        "prompt_per_second": 379.7768400144644,
+        "predicted_n": 42,
+        "predicted_ms": 937.395,
+        "predicted_per_token_ms": 22.31892857142857,
+        "predicted_per_second": 44.805018162034145,
+        "draft_n": 36,
+        "draft_n_accepted": 23
+      }
+    }
+  },
+  "upstream_base_url": "http://llm.ai",
+  "capture": {
+    "client": "pi",
+    "proxy_mode": "reverse"
+  },
+  "capture_turn": 7,
+  "display_turn": 7
+},{
+  "timestamp": "2026-06-10T05:02:31.159846+00:00",
+  "request_id": "req_84950efc197f",
+  "turn": 8,
+  "duration_ms": 2800,
+  "request": {
+    "method": "POST",
+    "path": "/v1/chat/completions",
+    "headers": {
+      "Host": "dify:1031",
+      "Accept-Encoding": "gzip, deflate",
+      "Accept": "application/json",
+      "Content-Type": "application/json",
+      "User-Agent": "OpenAI/Python 2.30.0",
+      "X-Stainless-Lang": "python",
+      "X-Stainless-Package-Version": "2.30.0",
+      "X-Stainless-OS": "MacOS",
+      "X-Stainless-Arch": "arm64",
+      "X-Stainless-Runtime": "CPython",
+      "X-Stainless-Runtime-Version": "3.13.13",
+      "Authorization": "Bearer sk-zL...",
+      "X-Stainless-Async": "false",
+      "x-stainless-retry-count": "0",
+      "x-stainless-read-timeout": "600",
+      "Content-Length": "1395"
+    },
+    "body": {
+      "messages": [{
+          "role": "system",
+          "content": "\n你是一个智能旅行助手。你的任务是分析用户的请求，并使用可用工具一步步地解决问题。\n\n# 可用工具:\n- `get_weather(city: str)`: 查询指定城市的实时天气。\n- `get_attraction(city: str, weather: str)`: 根据城市和天气搜索推荐的旅游景点。\n\n# 输出格式要求:\n你的每次回复必须严格遵循以下格式，包含一对Thought和Action：\n\nThought: [你的思考过程和下一步计划]\nAction: [你要执行的具体行动]\n\nAction的格式必须是以下之一：\n1. 调用工具：function_name(arg_name=\"arg_value\")\n2. 结束任务：Finish[最终答案]\n\n# 重要提示:\n- 每次只输出一对Thought-Action\n- Action必须在同一行，不要换行\n- 当收集到足够信息可以回答用户问题时，必须使用 Action: Finish[最终答案] 格式结束\n\n请开始吧！\n"
+        },{
+          "role": "user",
+          "content": "用户请求: 你好，请帮我查询一下今天北京的天气，然后根据天气推荐一个合适的旅游景点。\nThought: 用户想要查询北京的天气，并根据天气情况获取旅游景点推荐。首先，我需要调用 get_weather 函数来获取北京当前的天气信息。\n\nAction: Action: get_weather(city=\"北京\")\nObservation: 北京当前天气:Sunny，气温25摄氏度"
+        }
+      ],
+      "model": "Qwen3.6:MTP",
+      "stream": false
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Access-Control-Allow-Origin": "",
+      "Content-Length": "947",
+      "Content-Type": "application/json; charset=utf-8",
+      "Date": "Wed, 10 Jun 2026 05:02:31 GMT",
+      "Server": "nginx",
+      "X-New-Api-Version": "v1.0.0-rc.2",
+      "X-Oneapi-Request-Id": "202606100502283652492118268d9d6YS0o5xnX"
+    },
+    "body": {
+      "choices": [{
+          "finish_reason": "stop",
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "Thought: 已经成功获取了北京的天气信息（晴朗，25摄氏度）。接下来，我需要根据这个天气状况调用 `get_attraction` 函数来推荐适合在北京游玩且适合晴天出行的旅游景点。\n\nAction: get_attraction(city=\"北京\", weather=\"Sunny\")"
+          }
+        }],
+      "created": 1781067751,
+      "model": "Qwen3.6:35B",
+      "system_fingerprint": "b1-63248fc",
+      "object": "chat.completion",
+      "usage": {
+        "completion_tokens": 59,
+        "prompt_tokens": 496,
+        "total_tokens": 555,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "id": "chatcmpl-b49YsfphG4mgYyl13OXGXXqXF9LUdyj4",
+      "timings": {
+        "cache_n": 0,
+        "prompt_n": 496,
+        "prompt_ms": 1226.612,
+        "prompt_per_token_ms": 2.473008064516129,
+        "prompt_per_second": 404.36584673882203,
+        "predicted_n": 59,
+        "predicted_ms": 1476.777,
+        "predicted_per_token_ms": 25.030118644067798,
+        "predicted_per_second": 39.95186815612648,
+        "draft_n": 58,
+        "draft_n_accepted": 29
+      }
+    }
+  },
+  "upstream_base_url": "http://llm.ai",
+  "capture": {
+    "client": "pi",
+    "proxy_mode": "reverse"
+  },
+  "capture_turn": 8,
+  "display_turn": 8
+},{
+  "timestamp": "2026-06-10T05:02:36.199258+00:00",
+  "request_id": "req_056969fd66bf",
+  "turn": 9,
+  "duration_ms": 2964,
+  "request": {
+    "method": "POST",
+    "path": "/v1/chat/completions",
+    "headers": {
+      "Host": "dify:1031",
+      "Accept-Encoding": "gzip, deflate",
+      "Accept": "application/json",
+      "Content-Type": "application/json",
+      "User-Agent": "OpenAI/Python 2.30.0",
+      "X-Stainless-Lang": "python",
+      "X-Stainless-Package-Version": "2.30.0",
+      "X-Stainless-OS": "MacOS",
+      "X-Stainless-Arch": "arm64",
+      "X-Stainless-Runtime": "CPython",
+      "X-Stainless-Runtime-Version": "3.13.13",
+      "Authorization": "Bearer sk-zL...",
+      "X-Stainless-Async": "false",
+      "x-stainless-retry-count": "0",
+      "x-stainless-read-timeout": "600",
+      "Content-Length": "1863"
+    },
+    "body": {
+      "messages": [{
+          "role": "system",
+          "content": "\n你是一个智能旅行助手。你的任务是分析用户的请求，并使用可用工具一步步地解决问题。\n\n# 可用工具:\n- `get_weather(city: str)`: 查询指定城市的实时天气。\n- `get_attraction(city: str, weather: str)`: 根据城市和天气搜索推荐的旅游景点。\n\n# 输出格式要求:\n你的每次回复必须严格遵循以下格式，包含一对Thought和Action：\n\nThought: [你的思考过程和下一步计划]\nAction: [你要执行的具体行动]\n\nAction的格式必须是以下之一：\n1. 调用工具：function_name(arg_name=\"arg_value\")\n2. 结束任务：Finish[最终答案]\n\n# 重要提示:\n- 每次只输出一对Thought-Action\n- Action必须在同一行，不要换行\n- 当收集到足够信息可以回答用户问题时，必须使用 Action: Finish[最终答案] 格式结束\n\n请开始吧！\n"
+        },{
+          "role": "user",
+          "content": "用户请求: 你好，请帮我查询一下今天北京的天气，然后根据天气推荐一个合适的旅游景点。\nThought: 用户想要查询北京的天气，并根据天气情况获取旅游景点推荐。首先，我需要调用 get_weather 函数来获取北京当前的天气信息。\n\nAction: Action: get_weather(city=\"北京\")\nObservation: 北京当前天气:Sunny，气温25摄氏度\nThought: 已经成功获取了北京的天气信息（晴朗，25摄氏度）。接下来，我需要根据这个天气状况调用 `get_attraction` 函数来推荐适合在北京游玩且适合晴天出行的旅游景点。\n\nAction: get_attraction(city=\"北京\", weather=\"Sunny\")\nObservation: Under sunny weather, Beijing's top attractions include the Forbidden City, Temple of Heaven, and Summer Palace. These sites offer rich history and beautiful scenery."
+        }],
+      "model": "Qwen3.6:MTP",
+      "stream": false
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Access-Control-Allow-Origin": "",
+      "Content-Length": "1095",
+      "Content-Type": "application/json; charset=utf-8",
+      "Date": "Wed, 10 Jun 2026 05:02:36 GMT",
+      "Server": "nginx",
+      "X-New-Api-Version": "v1.0.0-rc.2",
+      "X-Oneapi-Request-Id": "202606100502332463196968268d9d6Bjpccla4"
+    },
+    "body": {
+      "choices": [{
+          "finish_reason": "stop",
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "Thought: 我已经获取了北京的天气信息（晴朗）以及相应的景点推荐（故宫、天坛、颐和园）。现在我可以整合这些信息，为用户提供最终的旅游建议。\n\nAction: Finish[北京今天的天气是晴朗，气温25摄氏度。为您推荐以下适合晴天的旅游景点：故宫、天坛和颐和园。这些地点不仅历史底蕴深厚，而且在好天气下景色更为宜人。]"
+          }
+        }
+      ],
+      "created": 1781067756,
+      "model": "Qwen3.6:35B",
+      "system_fingerprint": "b1-63248fc",
+      "object": "chat.completion",
+      "usage": {
+        "completion_tokens": 83,
+        "prompt_tokens": 589,
+        "total_tokens": 672,
+        "prompt_tokens_details": {
+          "cached_tokens": 307
+        }
+      },
+      "id": "chatcmpl-c9oRb5KMKMr2On4oHp1TjiZI6RCKN6Q8",
+      "timings": {
+        "cache_n": 307,
+        "prompt_n": 282,
+        "prompt_ms": 786.131,
+        "prompt_per_token_ms": 2.7876985815602837,
+        "prompt_per_second": 358.71883948095166,
+        "predicted_n": 83,
+        "predicted_ms": 2059.085,
+        "predicted_per_token_ms": 24.808253012048194,
+        "predicted_per_second": 40.30916645014654,
+        "draft_n": 78,
+        "draft_n_accepted": 45
+      }
+    }
+  },
+  "upstream_base_url": "http://llm.ai",
+  "capture": {
+    "client": "pi",
+    "proxy_mode": "reverse"
+  },
+  "capture_turn": 9,
+  "display_turn": 9
+}]

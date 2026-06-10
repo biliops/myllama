@@ -1,91 +1,241 @@
-# 针对 鲲鹏920 处理器的 llama.cpp 极致性能优化
+# 智能旅行助手项目 - 小白入门指南
 
-基于 llama.cpp 的 ARM 处理器深度优化项目，专注于在鲲鹏 920 处理器上实现极致的 CPU 推理性能。
+## 📁 项目结构
 
-## 项目背景
+```
+PPBuddy/
+├── AgentDemo.py     # 主程序（核心代码）
+├── Prompts.py       # 提示词模板（告诉AI该怎么做）
+├── .env            # 配置文件（存放密钥和地址）
+├── Debug.json      # 运行过程日志（记录3次请示详情）
+└── README.md       # 项目说明文档
+```
 
-随着大语言模型的快速发展，CPU 推理部署成为了许多场景的刚需。鲲鹏 920 作为国产 ARM 架构处理器的代表，具备强大的计算能力，但针对大语言模型推理的优化仍有很大空间。
+---
 
-本项目通过深入分析 llama.cpp 的核心计算路径，结合鲲鹏 920 的硬件特性，进行了全方位的性能优化，实现了显著的推理性能提升。
-
-## 技术亮点
-
-- **指令级优化**：启用了 ARMv8.2+ 的 9 项指令集特性｜NEON、ARM_FMA、FP16_VA、MATMUL_INT8、SVE、DOTPROD、SVE_CNT、OPENMP、REPACK 
-- **华为数学库**：集成了 kml (Kunpeng Math Library) 加速库，充分利用 NEON/SVE 向量指令指令 
-- **华为毕昇编译器**：使用华为 bisheng 编译器打造，为了极限性能
-- **Numa绑定**：拒绝 NUMA 跨节点内存访问，关闭超线程。仅需 20 核即可达到推理性能巅峰
-
-## 快速开始
-
-### 环境要求
-
-- 鲲鹏 920 处理器及兼容 ARMv8.2+ 架构
-- Linux 操作系统（推荐 Debian 13.5）
-- Podman 容器运行时（兼容 Docker，更合适 非 root 环境运行）
-
-### 安装 Podman
+## 🔧 运行方式（复制粘贴即可）
 
 ```bash
-# CentOS/RHEL 安装
-yum -y install podman
-
-# Debian/Ubuntu 安装
-apt -y install podman
-
-# 验证安装
-podman --version # 更擅长
+. ~/Applications/conda.env && conda activate Graphify && python ./AgentDemo.py
 ```
-### 快速演示 
-```bash
-# 直接下载，不用 git clone
-wget -N -P /tmp https://raw.githubusercontent.com/biliops/MyLLaMA/Kunpeng920/{Demo.Dockerfile,Qwen3-0.6.jinja}
-# 生成镜像，同时可用 docker 
-podman build -t llama-qwen3-0.6b -f Demo.Dockerfile /tmp
-# 启动 llama-server 推理 Qwen3-0.6 模型，访问： http://ip:12233 即可
-podman run --rm --name llama-server -p 12233:12233 localhost/llama-qwen3-0.6b
+
+---
+
+## 🚀 项目工作流程（像讲故事一样）
+
 ```
-### 运行推理服务  
-```bash
-# 拉取预构建镜像
-podman pull higkoohk/llama-kunpeng920:b9496
-# 请自行下载并手动修改命令行中的模型路径 (只用改 /model 目录下的文件，/opt/llama-b9496-ui 是镜像内路径不用改)
-nice -n 19 numactl --cpunodebind=1 --membind=1 \
- podman run --rm --network=host -v /model:/model \
- --name llama-server higkoohk/llama-kunpeng920:b9496 \
- llama-server --host 0.0.0.0 --port 12233 \
- -t 20 -tb 40 -np 1 -a Qwen3.6:35B -lv 3 \
- -m /model/Qwen3.6-35B-A3B-APEX-I-Quality.gguf \
- --mmproj /model/mmproj-Apex.gguf \
- --chat-template-file /model/chat_template.jinja \
- --path /opt/llama-b9496-ui \
- --flash-attn on -ctk q4_0 -ctv q4_0 -c 131072 -b 512 -ub 256 --cache-ram 8 \
- -fit on --cont-batching --repack --kv-unified --cache-idle-slots \
- --ui --mlock --mmap --warmup --props --metrics \
- --temp 0.6 --top_p 0.95 --top_k 20 --min_p 0.0 --presence-penalty 0.0 --repeat-penalty 1.0 \
- --reasoning off --image-min-tokens 1024
+用户提问 → AI思考 → 执行工具 → 获取结果 → 总结回答
 ```
-### API 调用示例  
-```bash
-curl -X POST http://localhost:12233/v1/chat/completions \
-  -H "Content-Type: application/json" \
-  -d '{
-    "prompt": "写个好玩的贪食蛇小游戏",
-    "max_tokens": 666,
-    "temperature": 0.7
-  }'
+
+### 第一步：用户提问
+```python
+user_prompt = "帮我查询北京天气并推荐景点"
 ```
-## 性能对比  
-经过优化后（kml+bisheng），在鲲鹏 920 处理器上的推理性能相比原始 llama.cpp 实现有显著提升： 
 
-| 模型 | 原始 llama.cpp | 优化后 | 提升幅度 |
-|------|--------------|--------|----------|
-| Qwen3.6-35B-A3B | ~15 词元/秒 | ~30 词元/秒 | ~2倍 |
-| Qwen3-0.6B | ~60 词元/秒 | ~100 词元/秒 | ~1.5倍 |
+### 第二步：AI思考（调用大语言模型）
+程序把问题发给 AI（如 Qwen3.6），AI 分析后决定下一步要做什么。
 
-## 参考资料
+### 第三步：执行工具
+根据 AI 的指令，程序会自动调用工具：
+- `get_weather("北京")` - 查询天气
+- `get_attraction("北京", "Sunny")` - 根据天气推荐景点
 
-更多技术细节请参考：[编译指南](https://ima.qq.com/note/share/_AweMLuO9AmVLJwWaFZmNg)
+### 第四步：总结回答
+AI 把所有信息整理成友好的回答。
 
-## 许可证
+---
 
-MIT License
+## 📖 核心代码逐行解释
+
+### 1. 导入工具（像借工具一样）
+
+```python
+import os                    # 操作系统工具（读取文件、环境变量）
+import re                    # 正则表达式工具（查找文本）
+import requests              # 网络请求工具（访问网站API）
+from tavily import TavilyClient  # 搜索引擎工具
+from openai import OpenAI      # AI大模型客户端
+from dotenv import load_dotenv # 读取配置文件工具
+```
+
+### 2. 读取配置（从 .env 文件拿钥匙）
+
+```python
+load_dotenv()                    # 打开 .env 文件
+API_KEY = os.getenv("API_KEY")   # 读取 API 密钥
+BASE_URL = os.getenv("BASE_URL") # 读取服务地址
+```
+
+### 3. 定义工具函数（智能体的手脚）
+
+```python
+# 查天气工具
+def get_weather(city):
+    url = f"https://wttr.in/{city}?format=j1"
+    response = requests.get(url)  # 访问天气网站
+    data = response.json()        # 解析返回的数据
+    return f"{city}天气:{weather_desc}，气温{temp_c}度"
+
+# 查景点工具
+def get_attraction(city, weather):
+    tavily = TavilyClient(api_key=api_key)
+    response = tavily.search(query=f"{city} {weather}景点推荐")
+    return response["answer"]
+```
+
+### 4. 调用 AI（让 AI 思考）
+
+```python
+client = OpenAI(api_key=API_KEY, base_url=BASE_URL)
+response = client.chat.completions.create(
+    model="Qwen3.6:MTP",
+    messages=[
+        {"role": "system", "content": AGENT_SYSTEM_PROMPT},  # 告诉AI它的身份
+        {"role": "user", "content": user_prompt}             # 用户的问题
+    ]
+)
+```
+
+---
+
+## 🧩 常用工具说明
+
+| 工具 | 作用 | 例子 |
+|------|------|------|
+| `requests` | 访问网站API | `requests.get("https://wttr.in/北京")` |
+| `openai` | 调用大语言模型 | 让 AI 帮我们思考和决策 |
+| `tavily` | 搜索互联网 | 搜索旅游景点信息 |
+| `dotenv` | 读取配置文件 | 从 `.env` 获取密钥 |
+
+---
+
+## 📝 关键语法讲解
+
+### 1. 字符串格式化（f-string）
+
+```python
+name = "北京"
+print(f"我想去{name}旅游")  # 输出: 我想去北京旅游
+```
+
+### 2. 函数定义
+
+```python
+def 函数名(参数1, 参数2):
+    # 函数体（要做的事情）
+    return 返回值
+```
+
+### 3. 列表和字典
+
+```python
+# 列表（有序的容器）
+fruits = ["苹果", "香蕉", "橙子"]
+print(fruits[0])  # 输出: 苹果
+
+# 字典（键值对容器）
+person = {"name": "小明", "age": 18}
+print(person["name"])  # 输出: 小明
+```
+
+### 4. JSON 数据
+
+API 返回的数据通常是 JSON 格式，像字典一样读取：
+
+```python
+data = response.json()  # 把 JSON 变成 Python 字典
+print(data["current_condition"])
+```
+
+---
+
+## 🎯 练习建议
+
+1. **修改城市**：把代码中的 `"北京"` 改成 `"上海"`，看看结果
+2. **修改提示词**：编辑 `prompts.py`，让 AI 用不同的风格回答
+3. **添加新工具**：尝试添加一个 `get_news(city)` 工具来获取城市新闻
+
+---
+
+## 📊 Debug.json - 运行过程日志
+
+这个文件记录了智能体一次完整对话的**3次请示详情**，非常有助于理解智能体的工作流程。
+
+### 🚦 三次请示的流程
+
+| 次数 | 目的 | AI输出 | 工具调用 |
+|------|------|--------|----------|
+| **第一次** | 分析用户请求 | "我需要调用 get_weather 获取北京天气" | `get_weather(city="北京")` |
+| **第二次** | 根据天气推荐景点 | "已获取天气，现在调用 get_attraction" | `get_attraction(city="北京", weather="Sunny")` |
+| **第三次** | 总结回答用户 | "已收集足够信息，现在结束任务" | `Finish[最终答案]` |
+
+### 📝 日志文件字段说明
+
+**请求部分（request）：**
+- `method`: HTTP 方法（POST）
+- `path`: API 路径（`/v1/chat/completions`）
+- `body.messages`: 发送给 AI 的消息列表
+  - `role="system"`: 系统提示词（告诉 AI 它的身份和规则）
+  - `role="user"`: 用户的问题 + 历史对话记录
+
+**响应部分（response）：**
+- `status`: HTTP 状态码（200 表示成功）
+- `body.choices[0].message.content`: AI 的回复内容
+  - `Thought`: AI 的思考过程
+  - `Action`: AI 要执行的操作
+
+**使用信息（usage）：**
+- `prompt_tokens`: 输入的 token 数
+- `completion_tokens`: AI 生成的 token 数
+- `total_tokens`: 总 token 数
+
+### 🔍 查看日志
+
+打开 `Debug.json` 文件，可以看到每次请示的完整数据：
+
+```json
+{
+"turn": 7,  // 第7次请示（第一次对话）
+"request": {
+    "body": {
+    "messages": [
+        {"role": "system", "content": "你是一个智能旅行助手..."},
+        {"role": "user", "content": "用户请求: 你好，请帮我查询一下今天北京的天气..."}
+    ],
+    "model": "Qwen3.6:MTP"
+    }
+},
+"response": {
+    "body": {
+    "choices": [{
+        "message": {
+        "content": "Thought: 用户想要查询北京的天气...\nAction: get_weather(city=\"北京\")"
+        }
+    }]
+    }
+}
+}
+```
+
+---
+
+## ❓ 常见问题
+
+**Q: 为什么要配置 API_KEY？**
+A: API 密钥相当于你的"身份证"，服务提供商需要验证你的身份才能让你使用。
+
+**Q: 什么是环境变量？**
+A: 就像一个全局的小黑板，程序可以从上面读取配置信息，不用写死在代码里。
+
+**Q: 为什么要分多个文件？**
+A: 这样更清晰，修改配置不用动代码，修改提示词也不用动核心逻辑。
+
+---
+
+## 📚 学习资源
+
+- Python 基础：https://www.runoob.com/python/python-tutorial.html
+- requests 库：https://docs.python-requests.org/
+- OpenAI API：https://platform.openai.com/docs/introduction
+
+如果有任何不理解的地方，随时问我！ 😊
